@@ -1,8 +1,4 @@
-export interface CosmoError<D = unknown> {
-	code: string;
-	message: string;
-	detail?: D;
-}
+import { CosmoError } from "./exceptions/CosmoError";
 
 class Result<T = unknown, E = CosmoError | null> {
 	constructor(private ok: T | null, private err: E) {}
