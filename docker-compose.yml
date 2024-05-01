@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  rman-mariadb:
+    image: mariadb:lts
+    restart: always
+    volumes:
+      # - ./cache/rman/mysql:/var/lib/mysql:Z
+      - ./services/rman/repos/mariadb/init.dev.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+    env_file:
+      - ./services/rman/.env.dev
+
+  rman:
+    build: .
+    working_dir: /app/services/rman
+    restart: always
+    volumes:
+      - ./services/rman:/app/services/rman
+      - ./packages/rman:/app/packages/rman
+    ports:
+      - "3000:3000"
+    command: bun rman:dev
+    env_file:
+      - ./services/rman/.env.dev

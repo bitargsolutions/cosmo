@@ -1,0 +1,6 @@
+node_modules
+bun.lockb
+cache
+
+.env.*
+!.env.example

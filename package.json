@@ -1,0 +1,12 @@
+{
+	"name": "@cosmo/monorepo",
+	"version": "1.0.0",
+	"license": "MPL-2.0",
+	"workspaces": [
+		"packages/*",
+		"services/*"
+	],
+	"dependencies": {
+		"@cosmo/core": "workspace:*"
+	}
+}

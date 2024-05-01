@@ -1,0 +1,16 @@
+{
+	"name": "@cosmo/service-rman",
+	"version": "1.0.0",
+	"devDependencies": {
+		"@types/bun": "^1.1.0"
+	},
+	"scripts": {
+		"rman:dev": "bun --watch main.ts"
+	},
+	"dependencies": {
+		"graphql": "^16.8.1",
+		"graphql-yoga": "^5.3.0",
+		"mariadb": "^3.3.0",
+		"@cosmo/core": "workspace:*"
+	}
+}
