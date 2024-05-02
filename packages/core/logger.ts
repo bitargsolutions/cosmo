@@ -1,4 +1,5 @@
 import ch from "chalk";
+import { TraceLevel } from "./types/TraceLevel";
 
 class Logger {
 	private static levels: TraceLevel[] = [];
