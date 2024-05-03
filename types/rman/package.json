@@ -1,0 +1,5 @@
+{
+	"name": "@types/rman",
+	"version": "1.0.0",
+	"main": "index.d.ts"
+}

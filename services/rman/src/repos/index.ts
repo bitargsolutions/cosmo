@@ -5,7 +5,8 @@ abstract class Repository {
 
 	public abstract FetchResource(
 		id: string
-	): AsyncResult<Ports.Resource.Middle>;
+	): AsyncResult<Ports.Resource.Middle | null>;
+	// -- Returns null if it's not found
 
 	public abstract UpdateResource(
 		r: Ports.Resource.Middle
@@ -17,7 +18,8 @@ abstract class Repository {
 
 	public abstract FetchAuthEntity(
 		id: string
-	): AsyncResult<Ports.AuthEntity.Middle>;
+	): AsyncResult<Ports.AuthEntity.Middle | null>;
+	// -- Returns null if it's not found
 }
 
 export default Repository;

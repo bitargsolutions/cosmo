@@ -10,7 +10,7 @@ class Logger {
 	public static Initialize(levels?: TraceLevel[]) {
 		const envLevels: TraceLevel[] = [];
 		if (!levels) {
-			const envStr = process.env.COSMO_LOGGER;
+			const envStr = process.env["COSMO_LOGGER"];
 			if (!envStr) return;
 			const sp = envStr.split(",");
 			sp.forEach((l) => envLevels.push(l.trim() as TraceLevel));

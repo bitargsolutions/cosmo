@@ -1,8 +1,6 @@
 import mariadb from "mariadb";
-import { Result, Logger } from "@cosmo/core";
-
-const trace = (...s: string[]) => Logger.Trace("MariaDB.Driver:", ...s);
-const error = (...s: string[]) => Logger.Error("MariaDB.Driver:", ...s);
+import { Result, NEVER } from "@cosmo/core";
+import { getFromEnv } from "../../utils/index.js";
 
 class MariaDB {
 	private static pool: mariadb.Pool | null = null;
@@ -11,46 +9,46 @@ class MariaDB {
 		return MariaDB.pool !== null;
 	}
 
-	public static Initialize(): void {
-		trace("Creating connection pool");
+	public static Initialize(): Result<never> {
+		const hostResult = getFromEnv("MARIADB_HOST");
+		if (hostResult.IsErr) return hostResult.AsErr();
+
+		const userResult = getFromEnv("MARIADB_HOST");
+		if (userResult.IsErr) return userResult.AsErr();
+
+		const passwordResult = getFromEnv("MARIADB_HOST");
+		if (passwordResult.IsErr) return passwordResult.AsErr();
+
+		const databaseResult = getFromEnv("MARIADB_HOST");
+		if (databaseResult.IsErr) return databaseResult.AsErr();
+
 		MariaDB.pool = mariadb.createPool({
-			host: process.env.MARIADB_HOST,
-			user: process.env.MARIADB_USER,
-			password: process.env.MARIADB_PASSWORD,
-			database: process.env.MARIADB_DATABASE,
+			host: hostResult.Unwrap(),
+			user: userResult.Unwrap(),
+			password: passwordResult.Unwrap(),
+			database: databaseResult.Unwrap(),
 			connectionLimit: 5
 		});
+
+		return Result.Ok(NEVER);
 	}
 
 	public static async Query<R = unknown>(q: string): AsyncResult<R> {
-		trace("Checking if initialized");
 		if (!MariaDB.IsInitialized || !MariaDB.pool) {
-			error("Driver not initialized");
 			return Result.Err({
 				code: "driver_not_initialized",
 				message: "The MariaDB driver was not initialized"
 			});
 		}
 
-		trace("Getting connection from pool");
 		const conn = await MariaDB.pool.getConnection();
-		trace(
-			`Pool info (active: ${MariaDB.pool.activeConnections()}, idle: ${MariaDB.pool.idleConnections()}, total: ${MariaDB.pool.totalConnections()})`
-		);
 
 		try {
-			trace(`Querying (${q})`);
 			const rows = await conn.query(q);
-
-			trace("Closing pool connection");
 			await conn.end();
-
 			return Result.Ok(rows);
 		} catch (e) {
-			trace("Closing pool connection");
 			await conn.end();
-
-			error("Invalid query");
 			return Result.Err({
 				code: "invalid_sql_query",
 				message: "The query was invalid",

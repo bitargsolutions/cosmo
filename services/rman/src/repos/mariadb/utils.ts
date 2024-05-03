@@ -30,6 +30,19 @@ export class ResourceUtilities {
 			archiverId: s?.archiver_id ?? undefined
 		};
 	}
+
+	public static MiddleToPresentation(
+		r: Ports.Resource.Middle
+	): Ports.Resource.Presentation {
+		return {
+			id: r.id,
+			creationDate: r.creationDate.toISOString(),
+			creatorId: r.creatorId,
+			archiveDate: r.archiveDate?.toISOString(),
+			archiverId: r.archiverId,
+			modificationDate: r.modificationDate?.toISOString()
+		};
+	}
 }
 
 export class AuthEntityUtilities {
@@ -50,6 +63,16 @@ export class AuthEntityUtilities {
 			id: s.id,
 			crid: s.crid,
 			secretHash: s.secret_hash
+		};
+	}
+
+	public static MiddleToPresentation(
+		e: Ports.AuthEntity.Middle
+	): Ports.AuthEntity.Presentation {
+		return {
+			id: e.id,
+			crid: e.crid,
+			secretHash: e.secretHash
 		};
 	}
 }

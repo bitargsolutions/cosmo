@@ -1,12 +1,9 @@
 {
 	"name": "@cosmo/monorepo",
-	"version": "1.0.0",
-	"license": "MPL-2.0",
+	"packageManager": "yarn@4.2.1",
 	"workspaces": [
 		"packages/*",
-		"services/*"
-	],
-	"dependencies": {
-		"@cosmo/core": "workspace:*"
-	}
+		"services/*",
+		"types/*"
+	]
 }

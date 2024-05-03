@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+service ResourceManager {
+	rpc GetResource(GetResourceRequest) returns (GetResourceResponse);
+}
+
+message GetResourceRequest {
+	string id = 1;
+}
+
+message GetResourceResponse {
+	oneof result {
+		Resource resource = 2;
+		Null null = 1;
+	}
+}
+
+message Null {
+	bool null = 1;
+}
+
+message Resource {
+	string id = 1;
+	string creatorId = 2;
+}
