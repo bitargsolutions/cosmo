@@ -7,4 +7,4 @@ COPY ./packages ./packages
 COPY ./types ./types
 COPY package.json .
 
-RUN corepack enable && yarn set version stable && yarn install
+RUN yarn install

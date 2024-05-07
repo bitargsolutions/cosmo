@@ -41,7 +41,7 @@ Server.addService(protoDescriptor.ResourceManager.service, {
 	GetResource
 });
 Server.bindAsync(
-	"host.docker.internal:50051",
+	"0.0.0.0:50051",
 	grpc.ServerCredentials.createInsecure(),
 	(_, port) => {
 		console.log("using", port);
