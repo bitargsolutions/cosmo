@@ -20,7 +20,7 @@ services:
       - ./services/rman:/app/services/rman
       - ./packages/rman:/app/packages/rman
     ports:
-      - "3000:3000"
-    command: bun rman:dev
+      - "50051:50051"
+    command: yarn rman:dev
     env_file:
       - ./services/rman/.env.dev

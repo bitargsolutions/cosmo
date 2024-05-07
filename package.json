@@ -1,6 +1,7 @@
 {
 	"name": "@cosmo/monorepo",
 	"packageManager": "yarn@4.2.1",
+	"private": true,
 	"workspaces": [
 		"packages/*",
 		"services/*",
