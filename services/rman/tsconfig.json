@@ -3,13 +3,13 @@
 		// Enable latest features
 		"lib": ["ESNext"],
 		"target": "ES6",
-		"module": "ESNext",
+		"module": "NodeNext",
 		"moduleDetection": "force",
 		"jsx": "react-jsx",
 		"allowJs": true,
 
 		// Bundler mode
-		"moduleResolution": "Node",
+		"moduleResolution": "NodeNext",
 		// "allowImportingTsExtensions": true,
 		"allowSyntheticDefaultImports": true,
 		// "verbatimModuleSyntax": true,
@@ -25,7 +25,7 @@
 		"noPropertyAccessFromIndexSignature": true,
 
 		// Other
-		"types": ["rman", "node"],
+		"types": ["rman"],
 		"outDir": "./dist"
 	},
 	"include": ["./src/**/*.ts", "./src/schema.proto"]

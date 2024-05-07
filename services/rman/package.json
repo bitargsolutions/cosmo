@@ -5,13 +5,16 @@
 	"devDependencies": {
 		"@types/node": "^20.12.8",
 		"@types/rman": "workspace:*",
+		"concurrently": "^8.2.2",
 		"nodemon": "^3.1.0",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.4.5"
 	},
 	"scripts": {
-		"rman:dev": "nodemon dist/main.js",
-		"rman:build": "tsc"
+		"rman:dev": "concurrently \"yarn rman:watch\" \"yarn rman:start:dev\"",
+		"rman:start:dev": "nodemon dist/main.js",
+		"rman:build": "yarn core:build && tsc",
+		"rman:watch": "yarn core:build && tsc -w"
 	},
 	"dependencies": {
 		"@cosmo/core": "workspace:*",

@@ -1,7 +1,6 @@
 import Crypto from "node:crypto";
 import { Result } from "@cosmo/core";
 
-import type { GraphQLResolveInfo } from "graphql";
 import { UNDEFINED_ENV_KEY } from "./errors.js";
 import type { EnvKey } from "./defs.js";
 
@@ -30,16 +29,6 @@ export function generateId(
 	const hexHash = hash.digest("hex");
 
 	return Result.Ok(`${prefix}:${hexHash}`);
-}
-
-declare global {
-	namespace Utils {
-		export type ResolverFn<
-			R = unknown,
-			A = unknown,
-			C = Record<string, any>
-		> = (p: never, args: A, ctx: C, info: GraphQLResolveInfo) => Promise<R>;
-	}
 }
 
 export function getFromEnv(key: EnvKey): SyncResult<string> {
