@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+service ResourceManager {
+
+	// -- Resources
+
+	rpc GetResource(GetResourceRequest) returns (GetResourceResponse);
+	rpc CreateResource(CreateResourceRequest) returns (CreateResourceResponse);
+	rpc ArchiveResource(ArchiveResourceRequest) returns (ArchiveResourceResponse);
+
+	// -- Auth Entities
+
+	rpc GetAuthEntity(GetAuthEntityRequest) returns (GetAuthEntityResponse);
+	rpc CreateAuthEntity(CreateAuthEntityRequest) returns (CreateAuthEntityResponse);
+	rpc ArchiveAuthEntity(ArchiveAuthEntityRequest) returns (ArchiveAuthEntityResponse);
+	rpc RestoreAuthEntitySecret(RestoreAuthEntitySecretRequest) returns (RestoreAuthEntitySecretResponse);
+
+	// -- Permissions
+
+	rpc AssignPermission(AssignPermissionRequest) returns (AssignPermissionResponse);
+	rpc RemovePermission(RemovePermissionRequest) returns (RemovePermissionResponse);
+	rpc CheckPermission(CheckPermissionRequest) returns (CheckPermissionResponse);
+}
+
+// -- Resources
+
+message Resource {
+	string id = 1;
+	string creatorId = 2;
+	string creationDate = 3;
+	optional string archiverId = 4;
+	optional string archiveDate = 5;
+}
+
+
+message GetResourceRequest {
+	string id = 1;
+}
+message GetResourceResponse {
+	optional Resource data = 1;
+}
+
+message CreateResourceRequest {}
+message CreateResourceResponse {}
+
+message ArchiveResourceRequest {}
+message ArchiveResourceResponse {}
+
+// -- Auth Entities
+
+message GetAuthEntityRequest {}
+message GetAuthEntityResponse {}
+
+message CreateAuthEntityRequest {}
+message CreateAuthEntityResponse {}
+
+message ArchiveAuthEntityRequest {}
+message ArchiveAuthEntityResponse {}
+
+message RestoreAuthEntitySecretRequest {}
+message RestoreAuthEntitySecretResponse {}
+
+// -- Permission
+
+message AssignPermissionRequest {}
+message AssignPermissionResponse {}
+
+message RemovePermissionRequest {}
+message RemovePermissionResponse {}
+
+message CheckPermissionRequest {}
+message CheckPermissionResponse {}

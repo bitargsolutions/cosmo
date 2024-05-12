@@ -13,22 +13,26 @@ class MariaDB {
 		const hostResult = getFromEnv("MARIADB_HOST");
 		if (hostResult.IsErr) return hostResult.AsErr();
 
-		const userResult = getFromEnv("MARIADB_HOST");
+		const userResult = getFromEnv("MARIADB_USER");
 		if (userResult.IsErr) return userResult.AsErr();
 
-		const passwordResult = getFromEnv("MARIADB_HOST");
+		const passwordResult = getFromEnv("MARIADB_PASSWORD");
 		if (passwordResult.IsErr) return passwordResult.AsErr();
 
-		const databaseResult = getFromEnv("MARIADB_HOST");
+		const databaseResult = getFromEnv("MARIADB_DATABASE");
 		if (databaseResult.IsErr) return databaseResult.AsErr();
 
-		MariaDB.pool = mariadb.createPool({
+		const config = {
 			host: hostResult.Unwrap(),
 			user: userResult.Unwrap(),
 			password: passwordResult.Unwrap(),
 			database: databaseResult.Unwrap(),
 			connectionLimit: 5
-		});
+		};
+
+		MariaDB.pool = mariadb.createPool(config);
+
+		console.log({ config });
 
 		return Result.Ok(NEVER);
 	}
