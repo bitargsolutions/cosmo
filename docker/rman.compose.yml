@@ -9,6 +9,9 @@ services:
         command: ./setup
 
     mariadb:
+        profiles:
+            - rman
+            - services
         image: mariadb:lts
         container_name: ResourceManager.MariaDB
         restart: always
@@ -19,11 +22,15 @@ services:
             - "3306:3306"
 
     service:
+        profiles:
+            - rman
+            - services
         build: ..
         container_name: ResourceManager.Service
         working_dir: /app/services/rman
         restart: always
         depends_on:
+            - base-build
             - rman-mariadb
         volumes:
             - ../services/rman:/app/services/rman

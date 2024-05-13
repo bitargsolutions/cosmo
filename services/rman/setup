@@ -3,28 +3,21 @@
 import fs from "node:fs";
 import path from "node:path";
 
-function checkMode() {
-	const supportedModes = ["dev", "prod"];
-	const envMode = process.env.MODE ?? "";
-
-	if (supportedModes.includes(envMode)) {
-		mode = envMode;
-		return true;
-	}
-
-	return false;
-}
-
 var defs = {
-	COSMO_LOGGER: import.meta.env?.COSMO_LOGGER,
-	MODE: import.meta.env?.MODE,
-	MARIADB_HOST: import.meta.env?.MARIADB_HOST,
-	MARIADB_DATABASE: import.meta.env?.MARIADB_DATABASE,
-	MARIADB_USER: import.meta.env?.MARIADB_USER,
-	MARIADB_PASSWORD: import.meta.env?.MARIADB_PASSWORD,
-	MARIADB_ROOT_PASSWORD: import.meta.env?.MARIADB_ROOT_PASSWORD,
+	COSMO_LOGGER: process.env?.COSMO_LOGGER,
+	MODE: process.env?.MODE,
+	MARIADB_HOST: process.env?.MARIADB_HOST,
+	MARIADB_DATABASE: process.env?.MARIADB_DATABASE,
+	MARIADB_USER: process.env?.MARIADB_USER,
+	MARIADB_PASSWORD: process.env?.MARIADB_PASSWORD,
+	MARIADB_ROOT_PASSWORD: process.env?.MARIADB_ROOT_PASSWORD,
 	SECRET_KEY: process.env?.SECRET_KEY
 };
+
+function checkMode() {
+	const supportedModes = ["dev", "prod"];
+	return supportedModes.includes(defs.MODE);
+}
 
 /*
 Set the init.sql

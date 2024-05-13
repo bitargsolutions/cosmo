@@ -13,8 +13,9 @@
 	"scripts": {
 		"rman:dev": "concurrently \"yarn rman:watch\" \"yarn rman:start:dev\"",
 		"rman:start:dev": "nodemon dist/main.js",
-		"rman:build": "yarn core:build && tsc",
-		"rman:watch": "yarn core:build && tsc -w"
+		"rman:build": "tsc",
+		"rman:watch": "tsc -w",
+		"rman:clean": "rm -rf $PROJECT_CWD/services/rman/dist"
 	},
 	"dependencies": {
 		"@cosmo/core": "workspace:*",

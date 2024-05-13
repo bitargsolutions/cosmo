@@ -1,0 +1,30 @@
+services:
+  base-build:
+    profiles:
+      - setup
+    depends_on:
+      - base-clean
+    build: ..
+    working_dir: /app
+    volumes:
+      - ../services/rman:/app/services/rman
+      - ../packages/rman:/app/packages/rman
+      - ../types/rman:/app/types/rman
+    command: >
+      sh -c " 
+      yarn core:build
+      && yarn rman:build"
+
+  base-clean:
+    profiles:
+      - setup
+    build: ..
+    working_dir: /app
+    volumes:
+      - ../services/rman:/app/services/rman
+      - ../packages/rman:/app/packages/rman
+      - ../types/rman:/app/types/rman
+    command: >
+      sh -c " 
+      yarn core:clean
+      && yarn rman:clean"

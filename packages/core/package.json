@@ -3,7 +3,8 @@
 	"version": "1.0.0",
 	"type": "module",
 	"scripts": {
-		"core:build": "tsc"
+		"core:build": "tsc",
+		"core:clean": "rm -rf $PROJECT_CWD/packages/core/dist"
 	},
 	"devDependencies": {
 		"@types/bun": "^1.1.0",

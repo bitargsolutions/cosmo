@@ -17,6 +17,9 @@ x-rman-env: &rman-env
   MARIADB_DATABASE: rman
   MARIADB_USER: rman_service
 
+include:
+  - docker/packages.compose.yml
+
 name: cosmito
 services:
   rman-setup:
