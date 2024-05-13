@@ -4,6 +4,8 @@ import protoLoader from "@grpc/proto-loader";
 import { ReflectionService } from "@grpc/reflection";
 
 import GetResource from "./methods/get_resource.js";
+import CreateResource from "./methods/create_resource.js";
+import ArchiveResource from "./methods/archive_resource.js";
 
 // -- Open gRPC Server
 
@@ -31,7 +33,9 @@ function startGRPCServer() {
 
 	reflection.addToServer(Server);
 	Server.addService(protoDescriptor.ResourceManager.service, {
-		GetResource
+		GetResource,
+		CreateResource,
+		ArchiveResource
 	});
 	Server.bindAsync(
 		"0.0.0.0:50051",

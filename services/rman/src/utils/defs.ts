@@ -21,3 +21,10 @@ export const ENV_KEYS = Object.freeze([
 	"MARIADB_DATABASE"
 ] as const);
 export type EnvKey = (typeof ENV_KEYS)[number];
+
+export const COSMO_CHANNEL = Object.freeze(["cosmo"] as const);
+export const COSMO_RESOURCE_TYPE = Object.freeze([
+	"permission",
+	"auth_entity",
+	"service"
+] as const);

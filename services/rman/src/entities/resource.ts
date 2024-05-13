@@ -2,6 +2,13 @@ import { SERVICE_PREFIX, generateId } from "../utils/index.js";
 import Repository from "../repos/index.js";
 import { Result } from "@cosmo/core";
 
+export interface CRID {
+	channel: "cosmo";
+	service: string;
+	resourceType: string;
+	hash: string;
+}
+
 class Resource {
 	private static repository: Repository;
 
@@ -40,18 +47,36 @@ class Resource {
 	}
 
 	public static async Archive(
-		r: Ports.Resource.Middle,
+		resourceId: string,
 		archiverId: string
 	): AsyncResult<Ports.Resource.Middle> {
-		r.archiveDate = new Date();
-		r.archiverId = archiverId;
+		const fetchResult = await Resource.Fetch(resourceId);
+		if (fetchResult.IsErr) {
+			return fetchResult.AsErr();
+		}
 
-		const result = await Resource.repository.UpdateResource(r);
+		const resource = fetchResult.Unwrap();
+		if (!resource) {
+			return Result.Err({
+				code: "ResourceNotFound",
+				message: "Trying to archive an unexistent resource"
+			});
+		}
+
+		resource.archiveDate = new Date();
+		resource.archiverId = archiverId;
+
+		const result = await Resource.repository.UpdateResource(resource);
 		if (result.IsErr) {
 			return result.AsErr();
 		}
 
-		return Result.Ok(r);
+		return Result.Ok(resource);
+	}
+
+	public static DisectCRID(crid: string) {
+		const s = crid.split(":");
+		return;
 	}
 }
 

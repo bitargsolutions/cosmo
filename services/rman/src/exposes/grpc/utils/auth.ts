@@ -2,7 +2,7 @@ import { Result } from "@cosmo/core";
 import { Metadata } from "@grpc/grpc-js";
 import AuthEntity from "../../../entities/auth_entity.js";
 
-interface Credentials {
+export interface Credentials {
 	entityId: string;
 	entitySecretHash: string;
 }

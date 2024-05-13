@@ -32,7 +32,6 @@ message Resource {
 	optional string archiveDate = 5;
 }
 
-
 message GetResourceRequest {
 	string id = 1;
 }
@@ -41,10 +40,16 @@ message GetResourceResponse {
 }
 
 message CreateResourceRequest {}
-message CreateResourceResponse {}
+message CreateResourceResponse {
+	Resource data = 1;
+}
 
-message ArchiveResourceRequest {}
-message ArchiveResourceResponse {}
+message ArchiveResourceRequest {
+	string id = 1;
+}
+message ArchiveResourceResponse {
+	Resource data = 1;
+}
 
 // -- Auth Entities
 

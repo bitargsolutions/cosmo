@@ -1,27 +1,36 @@
-services:
-  rman-mariadb:
-    image: mariadb:lts
-    restart: always
-    volumes:
-      # - ./cache/rman/mysql:/var/lib/mysql:Z
-      - ./services/rman/src/repos/mariadb/init.dev.sql:/docker-entrypoint-initdb.d/init.sql
-    ports:
-      - "3306:3306"
-    env_file:
-      - ./services/rman/.env.dev
+x-rman-env: &rman-env
+  # -- Stage of the app
+  #    It should be one of: dev, prod
+  MODE: dev
 
-  rman:
-    build: .
-    working_dir: /app/services/rman
-    restart: always
-    depends_on:
-      - rman-mariadb
-    volumes:
-      - ./services/rman:/app/services/rman
-      - ./packages/rman:/app/packages/rman
-      - ./types/rman:/app/types/rman
-    ports:
-      - "50051:50051"
-    command: yarn rman:dev
-    env_file:
-      - ./services/rman/.env.dev
+  # -- Set secure password. Should be differents
+  MARIADB_PASSWORD: <secure_password>
+  MARIADB_ROOT_PASSWORD: <secure_root_password>
+
+  # -- It should be 128 hex characters
+  #    It can be a SHA-512 hash. https://emn178.github.io/online-tools/sha512.html
+  SECRET_KEY: 673d4b1d7deabe33d0037d3a39927ec3d56397a45f5eb9ac0512c75808c293f0d022e04adc5555cd3644d18cf79e9e9ebaea7e3a8e96744b0c49312a7f8af398
+
+  # -- Don't need to modify these
+  MARIADB_HOST: rman-mariadb
+  COSMO_LOGGER: trace,info,warn,error
+  MARIADB_DATABASE: rman
+  MARIADB_USER: rman_service
+
+name: cosmito
+services:
+  rman-setup:
+    environment: *rman-env
+    extends:
+      file: docker/rman.compose.yml
+      service: setup
+  rman-mariadb:
+    environment: *rman-env
+    extends:
+      file: docker/rman.compose.yml
+      service: mariadb
+  rman-service:
+    environment: *rman-env
+    extends:
+      file: docker/rman.compose.yml
+      service: service

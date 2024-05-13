@@ -1,11 +1,11 @@
 node_modules
-bun.lockb
 cache
 temp
-
-.env.*
-!.env.example
-
-/**/dist
+yarn.lock
 
 .yarn
+
+/**/dist
+services/rman/src/repos/mariadb/init.sql
+.env*
+!.env.example

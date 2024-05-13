@@ -59,25 +59,25 @@ Must be used carefully and in very specific cases.
 INSERT INTO Resources (
 	id, creator_id, creation_date
 ) VALUES (
-	"cosmo:rman:service:rman",
-	"cosmo:rman:auth_entity:super",
+	"cosmo:rman:resource:rman_service",
+	"cosmo:rman:auth_entity:rman_super",
 	NOW()
 ), (
-	"cosmo:rman:auth_entity:super",
-	"cosmo:rman:auth_entity:super",
+	"cosmo:rman:resource:super_entity",
+	"cosmo:rman:auth_entity:rman_super",
 	NOW()
 ), (
-	"cosmo:rman:permission:super",
-	"cosmo:rman:auth_entity:super",
+	"cosmo:rman:resource:permission_wildcard",
+	"cosmo:rman:auth_entity:rman_super",
 	NOW()
 );
 
 INSERT INTO AuthEntities (
 	id, crid, secret_hash
 ) VALUES (
-	"cosmo:rman:auth_entity:super",
-	"cosmo:rman:auth_entity:super",
-	"<super_hash>"
+	"cosmo:rman:auth_entity:rman_super",
+	"cosmo:rman:auth_entity:rman_super",
+	"#SECRET_HASH#" -- It's interpolated on setup
 );
 
 INSERT INTO Permissions (

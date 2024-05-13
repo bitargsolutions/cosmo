@@ -1,0 +1,34 @@
+services:
+    setup:
+        profiles:
+            - setup
+        image: node:22-alpine
+        working_dir: /app/services/rman
+        volumes:
+            - ../services/rman:/app/services/rman
+        command: ./setup
+
+    mariadb:
+        image: mariadb:lts
+        container_name: ResourceManager.MariaDB
+        restart: always
+        volumes:
+            # - ./cache/rman/mysql:/var/lib/mysql:Z
+            - ../services/rman/src/repos/mariadb/init.dev.sql:/docker-entrypoint-initdb.d/init.sql
+        ports:
+            - "3306:3306"
+
+    service:
+        build: ..
+        container_name: ResourceManager.Service
+        working_dir: /app/services/rman
+        restart: always
+        depends_on:
+            - rman-mariadb
+        volumes:
+            - ../services/rman:/app/services/rman
+            - ../packages/rman:/app/packages/rman
+            - ../types/rman:/app/types/rman
+        ports:
+            - "50051:50051"
+        command: yarn rman:dev
