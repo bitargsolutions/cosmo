@@ -1,13 +1,4 @@
 services:
-    setup:
-        profiles:
-            - setup
-        image: node:22-alpine
-        working_dir: /app/services/rman
-        volumes:
-            - ../services/rman:/app/services/rman
-        command: ./setup
-
     mariadb:
         profiles:
             - rman
@@ -17,7 +8,7 @@ services:
         restart: always
         volumes:
             # - ./cache/rman/mysql:/var/lib/mysql:Z
-            - ../services/rman/src/repos/mariadb/init.dev.sql:/docker-entrypoint-initdb.d/init.sql
+            - ../services/rman/misc/init.sql:/docker-entrypoint-initdb.d/init.sql
         ports:
             - "3306:3306"
 
@@ -25,7 +16,7 @@ services:
         profiles:
             - rman
             - services
-        build: ..
+        image: cosmo-general-image
         container_name: ResourceManager.Service
         working_dir: /app/services/rman
         restart: always

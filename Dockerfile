@@ -2,6 +2,7 @@ FROM node:22-alpine
 
 WORKDIR /app
 
+COPY ./scripts ./scripts
 COPY ./services ./services
 COPY ./packages ./packages
 COPY ./types ./types

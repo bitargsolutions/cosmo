@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+import path from "node:path";
+import { execSync } from "node:child_process";
+
+// const CORE_DIR = path.resolve(import.meta.dirname, "..");
+const COSMO_DIR = path.resolve(import.meta.dirname, "..", "..", "..");
+
+/*
+ * Summary:
+ *  - Compile typescript
+ */
+
+console.log("Setting up: @cosmo/core");
+
+function buildProject() {
+	execSync("yarn core:build", {
+		encoding: "utf-8",
+		cwd: COSMO_DIR
+	});
+}
+
+function main() {
+	buildProject();
+}
+
+main();

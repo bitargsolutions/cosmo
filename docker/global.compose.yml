@@ -1,0 +1,39 @@
+services:
+  _cosmo-build-image:
+    profiles:
+      - setup
+    container_name: Cosmo.ImageBuilder
+    image: cosmo-general-image
+    build: ..
+    command: echo "cosmo-general-image builded"
+
+  base-setup:
+    profiles:
+      - setup
+    depends_on:
+      - _cosmo-build-image
+      - base-cleanup
+    image: cosmo-general-image
+    working_dir: /app
+    container_name: Cosmo.Setup
+    volumes:
+      - ../scripts:/app/scripts
+      - ../services:/app/services
+      - ../packages:/app/packages
+      - ../types:/app/types
+    command: ./scripts/setup
+
+  base-cleanup:
+    profiles:
+      - setup
+      - cleanup
+    depends_on:
+      - _cosmo-build-image
+    image: cosmo-general-image
+    working_dir: /app
+    container_name: Cosmo.Cleaner
+    volumes:
+      - ../services:/app/services
+      - ../packages:/app/packages
+      - ../types:/app/types
+    command: ./scripts/cleanup

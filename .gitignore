@@ -6,6 +6,6 @@ yarn.lock
 .yarn
 
 /**/dist
-services/rman/src/repos/mariadb/init.sql
+services/rman/misc/init.sql
 .env*
 !.env.example

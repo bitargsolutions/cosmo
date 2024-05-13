@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+
+import fs from "node:fs";
+import path from "node:path";
+
+const CORE_DIR = path.resolve(import.meta.dirname, "..");
+
+/*
+ * Summary:
+ *  - Remove dist folder
+ */
+
+console.log("Cleaning up: @cosmo/core");
+
+function main() {
+	const distPath = path.resolve(CORE_DIR, "dist");
+	fs.rmSync(distPath, { recursive: true, force: true });
+}
+
+main();
