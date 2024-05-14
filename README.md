@@ -6,8 +6,9 @@
 
 1. [Requisitos](#requisitos)
 2. [Empezá a desarrollar](#empezá-a-desarrollar)
-3. [¿Qué es Cosmo?](#bienvenido-a-cosmo)
-4. [Nuestra filosofía](#filosofía-de-cosmo)
+3. [¿Qué es Cosmo?](#qué-es-cosmo)
+4. [Nuestra filosofía](#nuestra-filosofía)
+5. [Documentación](#documentación)
 
 ---
 
@@ -93,3 +94,13 @@ _Cosmo_ se basa en una filosofía centrada en la libertad, flexibilidad y contro
 -   **Comunidad activa**: Fomentamos una comunidad de desarrollo vibrante y colaborativa en torno a Cosmo. A través de nuestra política de código abierto y nuestro enfoque en la experiencia del desarrollador, buscamos inspirar la innovación y el intercambio de ideas entre nuestros usuarios.
 
 -   **Autonomía y control**: Con Cosmo, los desarrolladores tienen la libertad de autohospedar su infraestructura backend, lo que les brinda un mayor control sobre su entorno de desarrollo y producción. Esto reduce la dependencia de proveedores externos y promueve la autonomía tecnológica.
+
+## Documentación
+
+Para ver más información, guías y documentación técnica, centralizamos todo en un proyecto de Notion.
+
+_[Documentación de Cosmo - Notion](https://www.notion.so/Documentaci-n-de-Cosmo-3fd3d0bffbaf4ecebbeedf50df0c1d1a?pvs=4)_
+
+---
+
+_Hecho por BitArg_
