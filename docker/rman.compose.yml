@@ -21,7 +21,6 @@ services:
         working_dir: /app/services/rman
         restart: always
         depends_on:
-            - base-build
             - rman-mariadb
         volumes:
             - ../services/rman:/app/services/rman
