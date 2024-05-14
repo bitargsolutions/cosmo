@@ -1,17 +1,30 @@
 export const Permissions = Object.freeze({
 	CreateResource: "cosmo:p:create_resource",
-	ReadResource: "cosmo:p:read_resource",
 	UpdateResource: "cosmo:p:update_resource",
-	CreateAuthEntity: "cosmo:rman:permission:create_auth_entity"
+	CreateAuthEntity: "cosmo:rman:permission:create_auth_entity",
+	Wildcard: "cosmo:rman:permission:wildcard",
+	ShallowReadResource: "cosmo:rman:permission:shallow_read_resource",
+	DeepReadResource: "cosmo:rman:permission:deep_read_resource"
 });
 
 export const PrimitiveResources = Object.freeze({
-	Service: "cosmo:rman:resource:rman"
+	Service: "cosmo:rman:resource:rman_service"
 });
 
-export const PrimitiveEntity = Object.freeze({
-	Super: "cosmo:rman:auth_entity:super"
+export const PrimitiveEntities = Object.freeze({
+	Super: "cosmo:rman:auth_entity:rman_super"
 });
+
+export const PrimitivePermissions = Object.freeze({
+	Wildcard: "cosmo:rman:permission:wildcard"
+});
+
+export const ReadModes = Object.freeze({
+	Shallow: "shallow",
+	Deep: "deep"
+} as const);
+type ReadModeKeys = keyof typeof ReadModes;
+export type ReadMode = (typeof ReadModes)[ReadModeKeys];
 
 export const ENV_KEYS = Object.freeze([
 	"SECRET_KEY",

@@ -3,6 +3,7 @@ import Auth, { Credentials } from "./auth.js";
 import { CosmoError, Result } from "@cosmo/core";
 import AuthEntity from "../../../entities/auth_entity.js";
 import { ZodTypeAny } from "zod";
+import { PrimitiveEntities } from "../../../utils/defs.js";
 
 export interface ChainContext {
 	call: ServerUnaryCall<unknown, unknown>;
@@ -25,7 +26,6 @@ class MethodChain {
 	): LastShackleFn {
 		return async (call, cb) => {
 			let ctx: ChainContext = { call };
-			console.log(ctx);
 			for (const f of fns) {
 				const result = await f(ctx);
 				if (result.IsErr) {
@@ -72,6 +72,7 @@ class MethodChain {
 			}
 
 			const fetchResult = await AuthEntity.Fetch(
+				PrimitiveEntities.Super,
 				ctx.credentials.entityId
 			);
 
@@ -83,7 +84,7 @@ class MethodChain {
 			if (!entity) {
 				return Result.Err({
 					code: "EntityNotFound",
-					message: `Entity with ID "${ctx.credentials.entityId} not found"`
+					message: `Entity with ID "${ctx.credentials.entityId}" not found`
 				});
 			}
 
@@ -100,15 +101,13 @@ class MethodChain {
 
 	public static ExtractBody(schema: ZodTypeAny): AsyncShackleFn {
 		return async function (ctx) {
-			console.log(ctx.call);
 			const reqValidation = schema.safeParse(ctx.call.request);
 			if (!reqValidation.success) {
 				return MethodChain.ErrWithCode(
 					status.INVALID_ARGUMENT,
-					// TODO: make message
 					Result.Err({
-						code: "",
-						message: ""
+						code: "InvalidMessageInput",
+						message: "The message validation failed"
 					})
 				);
 			}

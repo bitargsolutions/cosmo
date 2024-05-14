@@ -73,11 +73,6 @@ class Resource {
 
 		return Result.Ok(resource);
 	}
-
-	public static DisectCRID(crid: string) {
-		const s = crid.split(":");
-		return;
-	}
 }
 
 export default Resource;

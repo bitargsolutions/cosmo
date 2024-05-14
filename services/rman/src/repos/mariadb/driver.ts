@@ -31,9 +31,6 @@ class MariaDB {
 		};
 
 		MariaDB.pool = mariadb.createPool(config);
-
-		console.log({ config });
-
 		return Result.Ok(NEVER);
 	}
 

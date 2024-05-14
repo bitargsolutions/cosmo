@@ -4,26 +4,35 @@ import { z } from "zod";
 import MethodChain, { AsyncShackHandlerFn } from "../utils/method.js";
 import { Result } from "@cosmo/core";
 import AuthEntity from "../../../entities/auth_entity.js";
+import { PresentAuthEntity } from "../utils/presentation.js";
 
 const RequestSchema = z.object({
-	id: z.string().startsWith("cosmo:rman:")
+	auth_entity_id: z.string().startsWith("cosmo:rman:")
 });
 type GetAuthEntityRequest = z.infer<typeof RequestSchema>;
 
-const GetResource: AsyncShackHandlerFn = async (ctx) => {
+const GetAuthEntity: AsyncShackHandlerFn = async (ctx) => {
 	const body = ctx.body as GetAuthEntityRequest;
-	const fetchResult = await AuthEntity.Fetch(body.id);
+	const fetchResult = await AuthEntity.Fetch(
+		ctx.credentials?.entityId ?? "<unknown>",
+		body.auth_entity_id
+	);
 
 	if (fetchResult.IsErr) {
 		return MethodChain.ErrWithCode(status.INTERNAL, fetchResult.AsErr());
 	}
 
 	const data = fetchResult.Unwrap();
-	return Result.Ok({ data });
+	if (!data) {
+		return Result.Ok(null);
+	}
+
+	const presentationData = PresentAuthEntity(data);
+	return Result.Ok({ auth_entity: presentationData });
 };
 
 export default MethodChain.Link(
-	GetResource,
+	GetAuthEntity,
 	MethodChain.ExtractCredentials(),
 	MethodChain.ExtractBody(RequestSchema)
 );

@@ -6,7 +6,7 @@ export function FORBIDDEN_ACTION(
 	permission: string
 ) {
 	return Result.Err({
-		code: "forbidden_action",
+		code: "ForbiddenAction",
 		message: `The entity cannot perform the action needed`,
 		detail: {
 			authorId,

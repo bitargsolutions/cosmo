@@ -13,7 +13,7 @@ x-rman-env: &rman-env
 
   # -- Don't need to modify these
   MARIADB_HOST: rman-mariadb
-  COSMO_LOGGER: trace,info,warn,error
+  COSMO_LOGGER: warn,error
   MARIADB_DATABASE: rman
   MARIADB_USER: rman_service
 

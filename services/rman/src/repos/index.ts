@@ -20,6 +20,11 @@ abstract class Repository {
 		id: string
 	): AsyncResult<Ports.AuthEntity.Middle | null>;
 	// -- Returns null if it's not found
+
+	public abstract CompilePermissions(
+		authorId: string,
+		resourceId: string
+	): AsyncResult<string[]>;
 }
 
 export default Repository;

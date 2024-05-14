@@ -6,6 +6,8 @@ import { ReflectionService } from "@grpc/reflection";
 import GetResource from "./methods/get_resource.js";
 import CreateResource from "./methods/create_resource.js";
 import ArchiveResource from "./methods/archive_resource.js";
+import CreateAuthEntity from "./methods/create_auth_entity.js";
+import GetAuthEntity from "./methods/get_auth_entity.js";
 
 // -- Open gRPC Server
 
@@ -35,13 +37,15 @@ function startGRPCServer() {
 	Server.addService(protoDescriptor.ResourceManager.service, {
 		GetResource,
 		CreateResource,
-		ArchiveResource
+		ArchiveResource,
+		CreateAuthEntity,
+		GetAuthEntity
 	});
 	Server.bindAsync(
 		"0.0.0.0:50051",
 		grpc.ServerCredentials.createInsecure(),
 		(_, port) => {
-			console.log("using", port);
+			console.log("Cosmo | gRPC Server open on:", port);
 		}
 	);
 }

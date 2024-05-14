@@ -26,44 +26,64 @@ service ResourceManager {
 
 message Resource {
 	string id = 1;
-	string creatorId = 2;
-	string creationDate = 3;
-	optional string archiverId = 4;
-	optional string archiveDate = 5;
+	string creator_id = 2;
+	string creation_date = 3;
+	optional string archiver_id = 4;
+	optional string archive_date = 5;
 }
 
 message GetResourceRequest {
-	string id = 1;
+	string resource_id = 1;
 }
 message GetResourceResponse {
-	optional Resource data = 1;
+	optional Resource resource = 1;
 }
 
 message CreateResourceRequest {}
 message CreateResourceResponse {
-	Resource data = 1;
+	Resource created_resource = 1;
 }
 
 message ArchiveResourceRequest {
-	string id = 1;
+	string resource_id = 1;
 }
 message ArchiveResourceResponse {
-	Resource data = 1;
+	Resource archived_resource = 1;
 }
 
 // -- Auth Entities
 
-message GetAuthEntityRequest {}
-message GetAuthEntityResponse {}
+message AuthEntity {
+	string id = 1;
+	string secret_hash = 2;
+	Resource resource = 3;
+}
+
+message GetAuthEntityRequest {
+	string auth_entity_id = 1;
+}
+message GetAuthEntityResponse {
+	optional AuthEntity auth_entity = 1;
+}
 
 message CreateAuthEntityRequest {}
-message CreateAuthEntityResponse {}
+message CreateAuthEntityResponse {
+	AuthEntity created_auth_entity = 1;
+}
 
-message ArchiveAuthEntityRequest {}
-message ArchiveAuthEntityResponse {}
+message ArchiveAuthEntityRequest {
+	string auth_entity_id = 1;
+}
+message ArchiveAuthEntityResponse {
+	AuthEntity archived_auth_entity = 1;
+}
 
-message RestoreAuthEntitySecretRequest {}
-message RestoreAuthEntitySecretResponse {}
+message RestoreAuthEntitySecretRequest {
+	string auth_entity_id = 1;
+}
+message RestoreAuthEntitySecretResponse {
+	string new_secret_hash = 1;
+}
 
 // -- Permission
 

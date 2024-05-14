@@ -89,5 +89,5 @@ INSERT INTO Permissions (
 	"cosmo:rman:resource:permission_wildcard",
 	"cosmo:rman:resource:rman_service",
 	"cosmo:rman:auth_entity:rman_super",
-	"cosmo:rman:permission:super"
+	"cosmo:rman:permission:wildcard"
 );

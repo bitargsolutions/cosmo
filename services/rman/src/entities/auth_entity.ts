@@ -4,6 +4,7 @@ import { Result } from "@cosmo/core";
 import Resource from "./resource.js";
 import { makeSecretHash } from "../utils/auth_entity.js";
 import Permission from "./permission.js";
+import { ReadModes } from "../utils/defs.js";
 
 class AuthEntity {
 	private static repository: Repository;
@@ -50,8 +51,8 @@ class AuthEntity {
 
 		const newEntity: Ports.AuthEntity.Middle = {
 			id: idResult.Unwrap(),
-			crid: resource.id,
-			secretHash: secretHashResult.Unwrap()
+			secretHash: secretHashResult.Unwrap(),
+			resource
 		};
 
 		const createEntityResult = await AuthEntity.repository.CreateAuthEntity(
@@ -66,9 +67,36 @@ class AuthEntity {
 	}
 
 	public static async Fetch(
-		id: string
+		authorId: string,
+		entityId: string
 	): AsyncResult<Ports.AuthEntity.Middle | null> {
-		return AuthEntity.repository.FetchAuthEntity(id);
+		const fetchResult = await AuthEntity.repository.FetchAuthEntity(
+			entityId
+		);
+
+		if (fetchResult.IsErr) {
+			return fetchResult.AsErr();
+		}
+
+		const entity = fetchResult.Unwrap();
+		if (!entity) {
+			return Result.Ok(null);
+		}
+
+		const checkResult = await Permission.CanReadResource(
+			authorId,
+			entity.resource.id
+		);
+		if (checkResult.IsErr) {
+			return checkResult.AsErr();
+		}
+
+		const readMode = checkResult.Unwrap();
+		if (readMode === ReadModes.Shallow) {
+			entity.secretHash = "<hidden>";
+		}
+
+		return Result.Ok(entity);
 	}
 }
 

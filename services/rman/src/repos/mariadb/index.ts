@@ -8,6 +8,10 @@ import {
 	AuthEntityUtilities as AEU
 } from "./utils.js";
 
+type ResourceSource = Ports.Resource.Source.MariaDB;
+type AuthEntitySource = Ports.AuthEntity.Source.MariaDB;
+type PermissionSource = Ports.Permission.Source.MariaDB;
+
 class MariaDBRepository extends Repository {
 	constructor() {
 		super();
@@ -48,7 +52,7 @@ class MariaDBRepository extends Repository {
 	): AsyncResult<Ports.Resource.Middle | null> {
 		const q = SQL.FETCH_RESOURCE(id);
 
-		const result = await Driver.Query<Ports.Resource.Source[]>(q);
+		const result = await Driver.Query<ResourceSource[]>(q);
 
 		if (result.IsErr) {
 			return result.AsErr();
@@ -78,7 +82,7 @@ class MariaDBRepository extends Repository {
 		id: string
 	): AsyncResult<Ports.AuthEntity.Middle | null> {
 		const q = SQL.FETCH_AUTH_ENTITY(id);
-		const result = await Driver.Query<Ports.AuthEntity.Source[]>(q);
+		const result = await Driver.Query<AuthEntitySource[]>(q);
 
 		if (result.IsErr) {
 			return result.AsErr();
@@ -86,7 +90,38 @@ class MariaDBRepository extends Repository {
 
 		const rows = result.Unwrap();
 		const row = rows.pop();
-		return Result.Ok(!row ? null : AEU.SourceToMiddle(row));
+
+		if (!row) {
+			return Result.Ok(null);
+		}
+
+		const resourceResult = await this.FetchResource(row.crid);
+		if (resourceResult.IsErr) {
+			return resourceResult.AsErr();
+		}
+
+		const resource = resourceResult.Unwrap();
+		if (!resource) {
+			return Result.Ok(null);
+		}
+
+		const middle = AEU.SourceToMiddle(row, resource);
+		return Result.Ok(middle);
+	}
+
+	public async CompilePermissions(
+		authorId: string,
+		resourceId: string
+	): AsyncResult<string[]> {
+		const q = SQL.FETCH_ENTITY_RESOURCE_PERMISSIONS(authorId, resourceId);
+		const fetchResult = await Driver.Query(q);
+
+		if (fetchResult.IsErr) {
+			return fetchResult.AsErr();
+		}
+
+		const rows = fetchResult.Unwrap() as PermissionSource[];
+		return Result.Ok(rows.map((r) => r.permission));
 	}
 }
 
