@@ -7,11 +7,11 @@ services:
     build: ..
     command: echo "cosmo-general-image builded"
 
-  base-setup:
+  setup:
     profiles:
       - setup
     depends_on:
-      - _cosmo-build-image
+      - base-image-builder
       - base-cleanup
     image: cosmo-general-image
     working_dir: /app
@@ -21,19 +21,20 @@ services:
       - ../services:/app/services
       - ../packages:/app/packages
       - ../types:/app/types
-    command: ./scripts/setup
+    command: sh -c "./scripts/setup"
 
-  base-cleanup:
+  cleanup:
     profiles:
       - setup
       - cleanup
     depends_on:
-      - _cosmo-build-image
+      - base-image-builder
     image: cosmo-general-image
     working_dir: /app
     container_name: Cosmo.Cleaner
     volumes:
+      - ../scripts:/app/scripts
       - ../services:/app/services
       - ../packages:/app/packages
       - ../types:/app/types
-    command: ./scripts/cleanup
+    command: sh -c "./scripts/cleanup"

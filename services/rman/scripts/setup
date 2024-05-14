@@ -51,12 +51,14 @@ function setupSQL() {
 }
 
 function buildProject() {
-	const response = execSync("yarn rman:build", {
-		encoding: "utf-8",
-		cwd: COSMO_DIR
-	});
-
-	console.log({ response });
+	try {
+		execSync("yarn rman:build", {
+			encoding: "utf-8",
+			cwd: COSMO_DIR
+		});
+	} catch (e) {
+		console.log("Resource Manager builded with error");
+	}
 }
 
 function main() {

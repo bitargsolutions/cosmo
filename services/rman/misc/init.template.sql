@@ -1,13 +1,13 @@
-CREATE DATABASE IF NOT EXISTS rman_dev;
-USE rman_dev;
+CREATE DATABASE IF NOT EXISTS rman;
+USE rman;
 
 CREATE TABLE Resources (
-	id VARCHAR(100) PRIMARY KEY NOT NULL,
+	id VARCHAR(60) PRIMARY KEY NOT NULL,
 
-	creator_id VARCHAR(100) NOT NULL, -- Auth Entity
+	creator_id VARCHAR(63) NOT NULL, -- Auth Entity
 	creation_date DATETIME NOT NULL,
 
-	archiver_id VARCHAR(100), -- Auth Entity
+	archiver_id VARCHAR(63), -- Auth Entity
 	archive_date DATETIME
 );
 
@@ -22,7 +22,7 @@ near future, Cosmo should implement a centralized log of some kind.
 
 CREATE TABLE AuthEntities (
 	id VARCHAR(63) PRIMARY KEY NOT NULL,
-	crid VARCHAR(100) UNIQUE NOT NULL,
+	crid VARCHAR(60) UNIQUE NOT NULL,
 	secret_hash VARCHAR(128) NOT NULL,
 
 	CONSTRAINT fk_crid FOREIGN KEY (crid) REFERENCES Resources(id)
@@ -33,9 +33,9 @@ CRID stands for: Cosmo Resource ID.
 */
 
 CREATE TABLE Permissions (
-	crid VARCHAR(100) NOT NULL,
-	resource_id VARCHAR(100) NOT NULL,
-	auth_entity_id VARCHAR(100) NOT NULL,
+	crid VARCHAR(60) NOT NULL,
+	resource_id VARCHAR(60) NOT NULL,
+	auth_entity_id VARCHAR(63) NOT NULL,
 	permission VARCHAR(100) NOT NULL,
 
 	CONSTRAINT fk_resource_id FOREIGN KEY (resource_id) REFERENCES Resources(id),
@@ -76,7 +76,7 @@ INSERT INTO AuthEntities (
 	id, crid, secret_hash
 ) VALUES (
 	"cosmo:rman:auth_entity:rman_super",
-	"cosmo:rman:auth_entity:rman_super",
+	"cosmo:rman:resource:super_entity",
 	"#SECRET_HASH#" -- It's interpolated on setup
 );
 
@@ -86,8 +86,8 @@ INSERT INTO Permissions (
 	auth_entity_id,
 	permission
 ) VALUES (
-	"cosmo:rman:permission:super",
-	"cosmo:rman:service:rman",
-	"cosmo:rman:auth_entity:super",
+	"cosmo:rman:resource:permission_wildcard",
+	"cosmo:rman:resource:rman_service",
+	"cosmo:rman:auth_entity:rman_super",
 	"cosmo:rman:permission:super"
 );

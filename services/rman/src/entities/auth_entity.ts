@@ -17,18 +17,18 @@ class AuthEntity {
 	}
 
 	public static async Create(
-		author: Ports.AuthEntity.Middle
+		authorId: string
 	): AsyncResult<Ports.AuthEntity.Middle> {
 		// -- Check if entity can create new entities
 
-		const checkResult = await Permission.CanCreateEntity(author.id);
+		const checkResult = await Permission.CanCreateEntity(authorId);
 		if (checkResult.IsErr) {
 			return checkResult.AsErr();
 		}
 
 		// -- Create the new entity resource
 
-		const createResourceResult = await Resource.Create(author.id);
+		const createResourceResult = await Resource.Create(authorId);
 
 		if (createResourceResult.IsErr) {
 			return createResourceResult.AsErr();

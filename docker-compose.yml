@@ -17,11 +17,24 @@ x-rman-env: &rman-env
   MARIADB_DATABASE: rman
   MARIADB_USER: rman_service
 
-include:
-  - docker/global.compose.yml
-
 name: cosmito
 services:
+  base-image-builder:
+    environment: *rman-env
+    extends:
+      file: docker/global.compose.yml
+      service: _cosmo-build-image
+  base-setup:
+    environment: *rman-env
+    extends:
+      file: docker/global.compose.yml
+      service: setup
+  base-cleanup:
+    environment: *rman-env
+    extends:
+      file: docker/global.compose.yml
+      service: cleanup
+
   rman-mariadb:
     environment: *rman-env
     extends:

@@ -6,7 +6,7 @@ COSMO_DIR=$(dirname $SCRIPT_DIR)
 # -- Setup (the order matters)
 
 # 1. Packages
-. $COSMO_DIR/packages/core/scripts/setup
+$COSMO_DIR/packages/core/scripts/setup
 
 # 2. Services
-. $COSMO_DIR/services/rman/scripts/setup
+$COSMO_DIR/services/rman/scripts/setup

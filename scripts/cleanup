@@ -5,5 +5,5 @@ COSMO_DIR=$(dirname $SCRIPT_DIR)
 
 # -- Cleanup
 
-. $COSMO_DIR/packages/core/scripts/cleanup
-. $COSMO_DIR/services/rman/scripts/cleanup
+$COSMO_DIR/packages/core/scripts/cleanup
+$COSMO_DIR/services/rman/scripts/cleanup
