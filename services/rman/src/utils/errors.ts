@@ -7,7 +7,7 @@ export function FORBIDDEN_ACTION(
 ) {
 	return Result.Err({
 		code: "ForbiddenAction",
-		message: `The entity cannot perform the action needed`,
+		message: "The entity cannot perform the action needed",
 		detail: {
 			authorId,
 			resourceId,
@@ -30,5 +30,12 @@ export function INTERNAL_ERROR(message?: string) {
 	return Result.Err({
 		code: "internal_error",
 		message: message ?? "An internal error ocurred"
+	});
+}
+
+export function NOT_FOUND() {
+	return Result.Err({
+		code: "NotFound",
+		message: "The register was not found"
 	});
 }

@@ -4,7 +4,6 @@ import { Result } from "@cosmo/core";
 import {
 	PrimitiveResources,
 	Permissions,
-	PrimitivePermissions,
 	ReadMode,
 	ReadModes,
 	PrimitiveEntities
@@ -22,7 +21,7 @@ class Permission {
 		Permission.repository = r;
 	}
 
-	private static async Check(
+	public static async Check(
 		authorId: string,
 		resourceId: string,
 		permission: string
@@ -40,7 +39,7 @@ class Permission {
 			return compilationResult.AsErr();
 		}
 
-		const oneOf: string[] = [permission, PrimitivePermissions.Wildcard];
+		const oneOf: string[] = [permission, Permissions.Wildcard];
 
 		const permissions = compilationResult.Unwrap();
 		if (!permissions.some((p) => oneOf.includes(p))) {
@@ -87,11 +86,22 @@ class Permission {
 		return canReadShallow.AsErr();
 	}
 
-	public static async CompilePermissions(
+	public static CompilePermissions(
 		authorId: string,
 		resourceId: string
 	): AsyncResult<string[]> {
 		return Permission.repository.CompilePermissions(authorId, resourceId);
+	}
+
+	public static CanArchiveResource(
+		authorId: string,
+		resourceId: string
+	): AsyncResult<true> {
+		return Permission.Check(
+			authorId,
+			resourceId,
+			Permissions.ArchiveResource
+		);
 	}
 }
 

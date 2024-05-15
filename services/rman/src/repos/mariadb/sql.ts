@@ -52,3 +52,17 @@ export const FETCH_ENTITY_RESOURCE_PERMISSIONS = (
 ): string => `
 SELECT * FROM Permissions WHERE resource_id = "${resourceId}" AND auth_entity_id = "${entityId}";
 `;
+
+export const UPDATE_AUTH_ENTITY = (s: AuthEntity): string => {
+	const updatedFields: string[] = [];
+
+	const ignoreKeys = ["id", "crid"];
+	for (let [k, v] of Object.entries(s)) {
+		if (!v || ignoreKeys.includes(k)) continue;
+		updatedFields.push(`${k} = "${v}"`);
+	}
+
+	return `UPDATE AuthEntities SET ${updatedFields.join(",")} WHERE id = "${
+		s.id
+	}";`;
+};

@@ -1,10 +1,16 @@
 export const Permissions = Object.freeze({
-	CreateResource: "cosmo:p:create_resource",
-	UpdateResource: "cosmo:p:update_resource",
-	CreateAuthEntity: "cosmo:rman:permission:create_auth_entity",
-	Wildcard: "cosmo:rman:permission:wildcard",
+	// -- Resources
+	CreateResource: "cosmo:rman:permission:create_resource",
 	ShallowReadResource: "cosmo:rman:permission:shallow_read_resource",
-	DeepReadResource: "cosmo:rman:permission:deep_read_resource"
+	DeepReadResource: "cosmo:rman:permission:deep_read_resource",
+	ArchiveResource: "cosmo:rman:permission:archive_resource",
+
+	// -- Auth Entities
+	CreateAuthEntity: "cosmo:rman:permission:create_auth_entity",
+	UpdateAuthEntity: "cosmo:rman:permission:update_auth_entity",
+
+	// -- Others
+	Wildcard: "cosmo:rman:permission:wildcard"
 });
 
 export const PrimitiveResources = Object.freeze({
@@ -13,10 +19,6 @@ export const PrimitiveResources = Object.freeze({
 
 export const PrimitiveEntities = Object.freeze({
 	Super: "cosmo:rman:auth_entity:rman_super"
-});
-
-export const PrimitivePermissions = Object.freeze({
-	Wildcard: "cosmo:rman:permission:wildcard"
 });
 
 export const ReadModes = Object.freeze({

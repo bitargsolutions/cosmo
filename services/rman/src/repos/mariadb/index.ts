@@ -123,6 +123,21 @@ class MariaDBRepository extends Repository {
 		const rows = fetchResult.Unwrap() as PermissionSource[];
 		return Result.Ok(rows.map((r) => r.permission));
 	}
+
+	public async UpdateAuthEntity(
+		e: Ports.AuthEntity.Middle
+	): AsyncResult<boolean> {
+		const src = AEU.MiddleToSource(e);
+		const q = SQL.UPDATE_AUTH_ENTITY(src);
+
+		const result = await Driver.Query(q);
+
+		if (result.IsErr) {
+			return result.AsErr();
+		}
+
+		return Result.Ok(true);
+	}
 }
 
 export default MariaDBRepository;

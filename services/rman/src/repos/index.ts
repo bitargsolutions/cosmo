@@ -25,6 +25,10 @@ abstract class Repository {
 		authorId: string,
 		resourceId: string
 	): AsyncResult<string[]>;
+
+	public abstract UpdateAuthEntity(
+		e: Ports.AuthEntity.Middle
+	): AsyncResult<boolean>;
 }
 
 export default Repository;

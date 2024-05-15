@@ -6,8 +6,11 @@ import { ReflectionService } from "@grpc/reflection";
 import GetResource from "./methods/get_resource.js";
 import CreateResource from "./methods/create_resource.js";
 import ArchiveResource from "./methods/archive_resource.js";
+
 import CreateAuthEntity from "./methods/create_auth_entity.js";
 import GetAuthEntity from "./methods/get_auth_entity.js";
+import ArchiveAuthEntity from "./methods/archive_auth_entity.js";
+import RestoreAuthEntitySecret from "./methods/restore_auth_entity_secret.js";
 
 // -- Open gRPC Server
 
@@ -38,8 +41,11 @@ function startGRPCServer() {
 		GetResource,
 		CreateResource,
 		ArchiveResource,
+
 		CreateAuthEntity,
-		GetAuthEntity
+		GetAuthEntity,
+		ArchiveAuthEntity,
+		RestoreAuthEntitySecret
 	});
 	Server.bindAsync(
 		"0.0.0.0:50051",

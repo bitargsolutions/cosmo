@@ -4,7 +4,9 @@ import { Result } from "@cosmo/core";
 import Resource from "./resource.js";
 import { makeSecretHash } from "../utils/auth_entity.js";
 import Permission from "./permission.js";
-import { ReadModes } from "../utils/defs.js";
+import { Permissions, PrimitiveEntities, ReadModes } from "../utils/defs.js";
+import { NOT_FOUND } from "../utils/errors.js";
+import { measureMemory } from "node:vm";
 
 class AuthEntity {
 	private static repository: Repository;
@@ -94,6 +96,99 @@ class AuthEntity {
 		const readMode = checkResult.Unwrap();
 		if (readMode === ReadModes.Shallow) {
 			entity.secretHash = "<hidden>";
+		}
+
+		return Result.Ok(entity);
+	}
+
+	public static async Archive(
+		authorId: string,
+		entityId: string
+	): AsyncResult<Ports.AuthEntity.Middle> {
+		// -- Fetch entity
+
+		const fetchResult = await AuthEntity.Fetch(
+			PrimitiveEntities.Super,
+			entityId
+		);
+		if (fetchResult.IsErr) {
+			return fetchResult.AsErr();
+		}
+
+		const entity = fetchResult.Unwrap();
+		if (!entity) {
+			return NOT_FOUND();
+		}
+
+		// -- Check if author can archive the entity
+
+		const checkResult = await Permission.CanArchiveResource(
+			authorId,
+			entity.resource.id
+		);
+		if (checkResult.IsErr) {
+			return checkResult.AsErr();
+		}
+
+		// -- Archive the entity resource
+
+		const archiveResult = await Resource.Archive(
+			entity.resource.id,
+			authorId
+		);
+		if (archiveResult.IsErr) {
+			return archiveResult.AsErr();
+		}
+		const newResource = archiveResult.Unwrap();
+
+		entity.resource = newResource;
+		return Result.Ok(entity);
+	}
+
+	public static async RestoreSecret(
+		authorId: string,
+		entityId: string
+	): AsyncResult<Ports.AuthEntity.Middle> {
+		// -- Fetch entity
+
+		const fetchResult = await AuthEntity.Fetch(
+			PrimitiveEntities.Super,
+			entityId
+		);
+		if (fetchResult.IsErr) {
+			return fetchResult.AsErr();
+		}
+
+		const entity = fetchResult.Unwrap();
+		if (!entity) {
+			return NOT_FOUND();
+		}
+
+		// -- Check if author can update the entity
+
+		const checkResult = await Permission.Check(
+			authorId,
+			entity.resource.id,
+			Permissions.UpdateAuthEntity
+		);
+		if (checkResult.IsErr) {
+			return checkResult.AsErr();
+		}
+
+		// -- Update secret hash
+
+		const newSecretHash = makeSecretHash();
+		if (newSecretHash.IsErr) {
+			return newSecretHash.AsErr();
+		}
+
+		entity.secretHash = newSecretHash.Unwrap();
+
+		const updateResult = await AuthEntity.repository.UpdateAuthEntity(
+			entity
+		);
+		if (updateResult.IsErr) {
+			return updateResult.AsErr();
 		}
 
 		return Result.Ok(entity);
