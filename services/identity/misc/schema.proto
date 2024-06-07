@@ -1,0 +1,97 @@
+syntax = "proto3";
+
+service ResourceManager {
+
+	// -- Resources
+
+	rpc GetResource(GetResourceRequest) returns (GetResourceResponse);
+	rpc CreateResource(CreateResourceRequest) returns (CreateResourceResponse);
+	rpc ArchiveResource(ArchiveResourceRequest) returns (ArchiveResourceResponse);
+
+	// -- Auth Entities
+
+	rpc GetAuthEntity(GetAuthEntityRequest) returns (GetAuthEntityResponse);
+	rpc CreateAuthEntity(CreateAuthEntityRequest) returns (CreateAuthEntityResponse);
+	rpc ArchiveAuthEntity(ArchiveAuthEntityRequest) returns (ArchiveAuthEntityResponse);
+	rpc RestoreAuthEntitySecret(RestoreAuthEntitySecretRequest) returns (RestoreAuthEntitySecretResponse);
+
+	// -- Permissions
+
+	rpc AssignPermission(AssignPermissionRequest) returns (AssignPermissionResponse);
+	rpc RemovePermission(RemovePermissionRequest) returns (RemovePermissionResponse);
+	rpc CheckPermission(CheckPermissionRequest) returns (CheckPermissionResponse);
+}
+
+// -- Resources
+
+message Resource {
+	string id = 1;
+	string creator_id = 2;
+	string creation_date = 3;
+	optional string archiver_id = 4;
+	optional string archive_date = 5;
+}
+
+message GetResourceRequest {
+	string resource_id = 1;
+}
+message GetResourceResponse {
+	optional Resource resource = 1;
+}
+
+message CreateResourceRequest {}
+message CreateResourceResponse {
+	Resource created_resource = 1;
+}
+
+message ArchiveResourceRequest {
+	string resource_id = 1;
+}
+message ArchiveResourceResponse {
+	Resource archived_resource = 1;
+}
+
+// -- Auth Entities
+
+message AuthEntity {
+	string id = 1;
+	string secret_hash = 2;
+	Resource resource = 3;
+}
+
+message GetAuthEntityRequest {
+	string auth_entity_id = 1;
+}
+message GetAuthEntityResponse {
+	optional AuthEntity auth_entity = 1;
+}
+
+message CreateAuthEntityRequest {}
+message CreateAuthEntityResponse {
+	AuthEntity created_auth_entity = 1;
+}
+
+message ArchiveAuthEntityRequest {
+	string auth_entity_id = 1;
+}
+message ArchiveAuthEntityResponse {
+	AuthEntity archived_auth_entity = 1;
+}
+
+message RestoreAuthEntitySecretRequest {
+	string auth_entity_id = 1;
+}
+message RestoreAuthEntitySecretResponse {
+	string new_secret_hash = 1;
+}
+
+// -- Permission
+
+message AssignPermissionRequest {}
+message AssignPermissionResponse {}
+
+message RemovePermissionRequest {}
+message RemovePermissionResponse {}
+
+message CheckPermissionRequest {}
+message CheckPermissionResponse {}
